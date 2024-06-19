@@ -39,7 +39,7 @@ public class TileCoercionDeriver extends TileFortronConnective {
 	public TileCoercionDeriver(BlockPos pos, BlockState state) {
 		super(ModularForcefieldsBlockTypes.TILE_COERCIONDERIVER.get(), pos, state);
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).voltage(Constants.COERCIONDERIVER_VOLTAGE).setInputDirections(Direction.DOWN));
+		addComponent(new ComponentElectrodynamic(this, true, true).voltage(Constants.COERCIONDERIVER_VOLTAGE).setInputDirections(Direction.DOWN));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(4)).valid((index, stack, inv) -> {
 			for (Entry<ISubtype, RegistryObject<Item>> en : ModularForcefieldsItems.SUBTYPEITEMREGISTER_MAPPINGS.entrySet()) {
 				if (VALIDMODULES.contains(en.getKey())) {
