@@ -13,20 +13,17 @@ import modularforcefields.prefab.utils.MFFSTextUtils;
 import modularforcefields.registers.ModularForcefieldsFluids;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
-@OnlyIn(Dist.CLIENT)
 public class ScreenCoercionDeriver extends GenericScreen<ContainerCoercionDeriver> {
 	public ScreenCoercionDeriver(ContainerCoercionDeriver container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileCoercionDeriver deriver = container.getHostFromIntArray();
+			TileCoercionDeriver deriver = container.getSafeHost();
 			if (deriver != null) {
 				FluidTank tank = new FluidTank(deriver.fortronCapacity.get());
-				tank.setFluid(new FluidStack(ModularForcefieldsFluids.fluidFortron, deriver.fortron.get()));
+				tank.setFluid(new FluidStack(ModularForcefieldsFluids.FLUID_FORTRON, deriver.fortron.get()));
 				return tank;
 			}
 			return null;

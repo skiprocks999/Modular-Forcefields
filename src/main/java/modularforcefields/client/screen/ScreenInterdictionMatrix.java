@@ -11,20 +11,17 @@ import modularforcefields.prefab.utils.MFFSTextUtils;
 import modularforcefields.registers.ModularForcefieldsFluids;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
-@OnlyIn(Dist.CLIENT)
 public class ScreenInterdictionMatrix extends GenericScreen<ContainerInterdictionMatrix> {
 	public ScreenInterdictionMatrix(ContainerInterdictionMatrix container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileInterdictionMatrix matrix = container.getHostFromIntArray();
+			TileInterdictionMatrix matrix = container.getSafeHost();
 			if (matrix != null) {
 				FluidTank tank = new FluidTank(matrix.fortronCapacity.get());
-				tank.setFluid(new FluidStack(ModularForcefieldsFluids.fluidFortron, matrix.fortron.get()));
+				tank.setFluid(new FluidStack(ModularForcefieldsFluids.FLUID_FORTRON, matrix.fortron.get()));
 				return tank;
 			}
 			return null;

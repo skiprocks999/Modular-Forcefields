@@ -9,24 +9,24 @@ import java.util.UUID;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.ISubtype;
 import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.properties.PropertyTypes;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.InventoryUtils;
 import modularforcefields.References;
 import modularforcefields.common.inventory.container.ContainerInterdictionMatrix;
+import modularforcefields.common.item.ItemModule;
 import modularforcefields.common.item.subtype.SubtypeModule;
-import modularforcefields.registers.ModularForcefieldsBlockTypes;
-import modularforcefields.registers.ModularForcefieldsItems;
+import modularforcefields.registers.ModularForcefieldsDataComponentTypes;
+import modularforcefields.registers.ModularForcefieldsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
@@ -36,25 +36,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.living.MobSpawnEvent.SpawnPlacementCheck;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent.BreakEvent;
-import net.minecraftforge.event.level.BlockEvent.EntityPlaceEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.items.IItemHandler;
 
-@EventBusSubscriber(bus = Bus.FORGE, modid = References.ID)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = References.ID)
 public class TileInterdictionMatrix extends TileFortronConnective {
 	public static HashMap<TileInterdictionMatrix, AABB> matrices = new HashMap<>();
 	public static final int BASEENERGY = 100;
 	public static final HashSet<SubtypeModule> VALIDMODULES = Sets.newHashSet(SubtypeModule.values());
-	public Property<Integer> fortron = property(new Property<>(PropertyType.Integer, "fortron", 0));
-	public Property<Integer> fortronCapacity = property(new Property<>(PropertyType.Integer, "fortronCapacity", 0));
+	public Property<Integer> fortron = property(new Property<>(PropertyTypes.INTEGER, "fortron", 0));
+	public Property<Integer> fortronCapacity = property(new Property<>(PropertyTypes.INTEGER, "fortronCapacity", 0));
 	public int radius;
 	public boolean running;
 	public boolean antispawn;
@@ -64,7 +60,7 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 	private int strength;
 
 	public TileInterdictionMatrix(BlockPos pos, BlockState state) {
-		super(ModularForcefieldsBlockTypes.TILE_INTERDICTIONMATRIX.get(), pos, state);
+		super(ModularForcefieldsTiles.TILE_INTERDICTIONMATRIX.get(), pos, state);
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(18)).valid((index, stack, inv) -> true).onChanged(this::onChanged));
 		addComponent(new ComponentContainerProvider("container.interdictionmatrix", this).createMenu((id, player) -> new ContainerInterdictionMatrix(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
@@ -100,11 +96,8 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 					BlockEntity entity = level.getBlockEntity(worldPosition.offset(direction.getNormal()));
 					if (entity instanceof TileBiometricIdentifier identifier) {
 						for (ItemStack stack : identifier.<ComponentInventory>getComponent(IComponentType.Inventory).getItems()) {
-							if (stack.hasTag()) {
-								UUID id = stack.getTag().getUUID("player");
-								if (id != null) {
-									validPlayers.add(id);
-								}
+							if (stack.has(ModularForcefieldsDataComponentTypes.UUID)) {
+								validPlayers.add(stack.get(ModularForcefieldsDataComponentTypes.UUID));
 							}
 						}
 					}
@@ -114,9 +107,8 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 				matrices.put(this, aabb);
 				List<SubtypeModule> list = new ArrayList<>();
 				for (ItemStack stack : this.<ComponentInventory>getComponent(IComponentType.Inventory).getItems()) {
-					ISubtype subtype = ModularForcefieldsItems.ITEMSUBTYPE_MAPPINGS.get(stack.getItem());
-					if (subtype instanceof SubtypeModule module) {
-						list.add(module);
+					if(stack.getItem() instanceof ItemModule module) {
+						list.add(module.subtype);
 					}
 				}
 				applyModules(list, entities);
@@ -159,35 +151,72 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 
 	private void confiscateItems(Player player) {
 		BlockEntity above = level.getBlockEntity(worldPosition.above());
-		LazyOptional<IItemHandler> cap = above.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN);
-		if (cap.isPresent()) {
-			List<ItemStack> stacks = player.getInventory().items;
-			IItemHandler handler = cap.resolve().get();
-			for (int index = 0; index < stacks.size(); index++) {
-				ItemStack back = InventoryUtils.addItemToItemHandler(handler, stacks.get(index), 0, handler.getSlots());
-				player.getInventory().items.set(index, back);
-			}
-			stacks = player.getInventory().items;
-			for (int index = 0; index < stacks.size(); index++) {
-				ItemStack back = InventoryUtils.addItemToItemHandler(handler, stacks.get(index), 0, handler.getSlots());
-				player.getInventory().items.set(index, back);
-			}
-			stacks = player.getInventory().offhand;
-			for (int index = 0; index < stacks.size(); index++) {
-				ItemStack back = InventoryUtils.addItemToItemHandler(handler, stacks.get(index), 0, handler.getSlots());
-				player.getInventory().items.set(index, back);
-			}
+
+		if(above == null) {
+			return;
+		}
+
+		IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, above.getBlockPos(), above.getBlockState(), above, Direction.DOWN);
+
+		if(handler == null) {
+			return;
+		}
+
+		List<ItemStack> stacks = player.getInventory().items;
+
+		for (int index = 0; index < stacks.size(); index++) {
+
+			player.getInventory().setItem(index, addItemToItemHandler(stacks.get(index), handler).copy());
+		}
+
+		stacks = player.getInventory().armor;
+
+		for (int index = 0; index < stacks.size(); index++) {
+
+			player.getInventory().setItem(index, addItemToItemHandler(stacks.get(index), handler).copy());
+		}
+
+		stacks = player.getInventory().offhand;
+
+		for (int index = 0; index < stacks.size(); index++) {
+
+			player.getInventory().setItem(index, addItemToItemHandler(stacks.get(index), handler).copy());
 
 		}
 	}
 
+	private ItemStack addItemToItemHandler(ItemStack item, IItemHandler handler) {
+
+		for (int targetIndex = 0; targetIndex < handler.getSlots(); targetIndex++) {
+
+			ItemStack remainder = handler.insertItem(targetIndex, item, false);
+
+			int taken = item.getCount() - remainder.getCount();
+
+			if (taken <= 0) {
+
+				continue;
+
+			}
+
+			item.shrink(taken);
+
+			if(item.isEmpty()) {
+				break;
+			}
+
+		}
+
+		return item;
+
+	}
+
 	@SubscribeEvent
-	public static void spawnLiving(SpawnPlacementCheck event) {
+	public static void spawnLiving(MobSpawnEvent.SpawnPlacementCheck event) {
 		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
 			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().antispawn) {
-				if (en.getValue().intersects(event.getEntityType().getAABB(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))) {
-					event.setCanceled(true);
-					event.setResult(Result.DENY);
+				if (en.getValue().intersects(event.getEntityType().getSpawnAABB(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))) {
+					event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
 					return;
 				}
 			}
@@ -195,7 +224,7 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 	}
 
 	@SubscribeEvent
-	public static void antiAccess(PlayerInteractEvent event) {
+	public static void antiAccessBlockRight(PlayerInteractEvent.RightClickBlock event) {
 		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
 			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockaccess) {
 				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
@@ -204,7 +233,7 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 						continue;
 					}
 					event.setCanceled(true);
-					event.setResult(Result.DENY);
+					event.setCancellationResult(InteractionResult.FAIL);
 					return;
 				}
 			}
@@ -212,7 +241,56 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 	}
 
 	@SubscribeEvent
-	public static void antiAccess(BreakEvent event) {
+	public static void antiAccessBlockLeft(PlayerInteractEvent.LeftClickBlock event) {
+		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
+			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockaccess) {
+				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
+					Player player = event.getEntity();
+					if (en.getKey().validPlayers.contains(player.getUUID()) || player.isCreative()) {
+						continue;
+					}
+					event.setCanceled(true);
+					return;
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void antiAccessItemRight(PlayerInteractEvent.RightClickBlock event) {
+		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
+			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockaccess) {
+				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
+					Player player = event.getEntity();
+					if (en.getKey().validPlayers.contains(player.getUUID()) || player.isCreative()) {
+						continue;
+					}
+					event.setCanceled(true);
+					event.setCancellationResult(InteractionResult.FAIL);
+					return;
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void antiAccessItemLeft(PlayerInteractEvent.LeftClickBlock event) {
+		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
+			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockaccess) {
+				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
+					Player player = event.getEntity();
+					if (en.getKey().validPlayers.contains(player.getUUID()) || player.isCreative()) {
+						continue;
+					}
+					event.setCanceled(true);
+					return;
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void antiAccess(BlockEvent.BreakEvent event) {
 		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
 			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockalter) {
 				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
@@ -221,7 +299,6 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 						continue;
 					}
 					event.setCanceled(true);
-					event.setResult(Result.DENY);
 					return;
 				}
 			}
@@ -229,7 +306,7 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 	}
 
 	@SubscribeEvent
-	public static void antiAccess(EntityPlaceEvent event) {
+	public static void antiAccess(BlockEvent.EntityPlaceEvent event) {
 		for (Entry<TileInterdictionMatrix, AABB> en : matrices.entrySet()) {
 			if (en.getKey().running && !en.getKey().isRemoved() && en.getKey().blockalter) {
 				if (en.getValue().contains(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ())) {
@@ -239,7 +316,6 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 						}
 					}
 					event.setCanceled(true);
-					event.setResult(Result.DENY);
 					return;
 				}
 			}
@@ -267,8 +343,8 @@ public class TileInterdictionMatrix extends TileFortronConnective {
 	}
 
 	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
+	public void onChunkUnloaded() {
+		super.onChunkUnloaded();
 		matrices.remove(this);
 	}
 }
