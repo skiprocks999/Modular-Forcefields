@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModularForcefieldsFluids {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, References.ID);
 
-	public static final DeferredHolder<Fluid, FluidNonPlaceable> FLUID_FORTRON = FLUIDS.register("fluidfortron", () -> new FluidNonPlaceable(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, new SimpleWaterBasedFluidType(References.ID, "fluidfortron", "fortron", Color.WHITE)));
+	public static final DeferredHolder<Fluid, FluidNonPlaceable> FLUID_FORTRON = FLUIDS.register("fluidfortron", () -> new FluidNonPlaceable(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, new SimpleWaterBasedFluidType(References.ID, "fluidfortron", "fortronfield", Color.WHITE)));
 
 
 }

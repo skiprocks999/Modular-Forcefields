@@ -3,7 +3,6 @@ package modularforcefields;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
 import modularforcefields.client.ClientRegister;
 import modularforcefields.common.block.BlockColorFortronField;
-import modularforcefields.common.packet.NetworkHandler;
 import modularforcefields.common.settings.Constants;
 import modularforcefields.common.tags.MFFTags;
 import modularforcefields.registers.ModularForcefieldsBlocks;
@@ -44,6 +43,6 @@ public class ModularForcefields {
 
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
-		NetworkHandler.init();
+
 	}
 }

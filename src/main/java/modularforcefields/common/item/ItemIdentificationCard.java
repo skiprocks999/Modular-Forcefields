@@ -3,6 +3,7 @@ package modularforcefields.common.item;
 import java.util.List;
 
 import electrodynamics.common.item.ItemElectrodynamics;
+import modularforcefields.prefab.utils.MFFSTextUtils;
 import modularforcefields.registers.ModularForcefieldsCreativeTabs;
 import modularforcefields.registers.ModularForcefieldsDataComponentTypes;
 import net.minecraft.network.chat.Component;
@@ -24,7 +25,7 @@ public class ItemIdentificationCard extends ItemElectrodynamics {
 	public void onUsage(Player player, ItemStack stack) {
 		stack.set(ModularForcefieldsDataComponentTypes.UUID, player.getUUID());
 		stack.set(ModularForcefieldsDataComponentTypes.NAME, player.getName().getString());
-		player.displayClientMessage(Component.translatable("message.identificationcard.text", player.getName()), true);
+		player.displayClientMessage(MFFSTextUtils.chatMessage("identificationcard.text", player.getName()), true);
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class ItemIdentificationCard extends ItemElectrodynamics {
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
 		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 		if (stack.has(ModularForcefieldsDataComponentTypes.NAME)) {
-			tooltipComponents.add(Component.translatable("message.identificationcard.id", stack.get(ModularForcefieldsDataComponentTypes.NAME)));
+			tooltipComponents.add(MFFSTextUtils.chatMessage("identificationcard.id", stack.get(ModularForcefieldsDataComponentTypes.NAME)));
 		}
 	}
 }

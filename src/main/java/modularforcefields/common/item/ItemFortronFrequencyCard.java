@@ -4,6 +4,7 @@ import java.util.List;
 
 import electrodynamics.common.item.ItemElectrodynamics;
 import modularforcefields.common.tile.TileFortronConnective;
+import modularforcefields.prefab.utils.MFFSTextUtils;
 import modularforcefields.registers.ModularForcefieldsCreativeTabs;
 import modularforcefields.registers.ModularForcefieldsDataComponentTypes;
 import net.minecraft.network.chat.Component;
@@ -37,7 +38,7 @@ public class ItemFortronFrequencyCard extends ItemElectrodynamics {
                 freq = 0;
             }
             stack.set(ModularForcefieldsDataComponentTypes.FREQUENCY, freq);
-            player.displayClientMessage(Component.translatable("message.frequencycard.text", freq), true);
+            player.displayClientMessage(MFFSTextUtils.chatMessage("frequencycard.text", freq), true);
         }
     }
 
@@ -58,9 +59,9 @@ public class ItemFortronFrequencyCard extends ItemElectrodynamics {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag)
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         if (stack.has(ModularForcefieldsDataComponentTypes.FREQUENCY)) {
-            tooltipComponents.add(Component.translatable("message.frequencycard.freq", stack.get(ModularForcefieldsDataComponentTypes.FREQUENCY)));
+            tooltipComponents.add(MFFSTextUtils.chatMessage("frequencycard.freq", stack.get(ModularForcefieldsDataComponentTypes.FREQUENCY)));
         }
 
     }
