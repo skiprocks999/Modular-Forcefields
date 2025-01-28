@@ -8,14 +8,14 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryB
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import modularforcefields.common.inventory.container.ContainerBiometricIdentifier;
-import modularforcefields.registers.ModularForcefieldsBlockTypes;
+import modularforcefields.registers.ModularForcefieldsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileBiometricIdentifier extends GenericTile {
 
 	public TileBiometricIdentifier(BlockPos pos, BlockState state) {
-		super(ModularForcefieldsBlockTypes.TILE_BIOMETRICIDENTIFIER.get(), pos, state);
+		super(ModularForcefieldsTiles.TILE_BIOMETRICIDENTIFIER.get(), pos, state);
 		addComponent(new ComponentTickable(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(9)));

@@ -1,16 +1,15 @@
 package modularforcefields.registers;
 
-import static modularforcefields.registers.ModularForcefieldsFluids.fluidFortron;
-
 import modularforcefields.References;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModularForcefieldsFluidTypes {
-	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, References.ID);
 
-	static {
-		FLUID_TYPES.register("fluidfortron", () -> fluidFortron.getFluidType());
-	}
+	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, References.ID);
+
+	public static final DeferredHolder<FluidType, FluidType> FLUID_TYPE_FORTRON = FLUID_TYPES.register("fluidfortron", () -> ModularForcefieldsFluids.FLUID_FORTRON.get().getFluidType());
+
 }

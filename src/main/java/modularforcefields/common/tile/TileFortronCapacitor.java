@@ -1,13 +1,11 @@
 package modularforcefields.common.tile;
 
 import java.util.HashSet;
-import java.util.Map.Entry;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.ISubtype;
 import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.properties.PropertyTypes;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -16,35 +14,23 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import modularforcefields.common.inventory.container.ContainerFortronCapacitor;
 import modularforcefields.common.item.subtype.SubtypeModule;
-import modularforcefields.registers.ModularForcefieldsBlockTypes;
+import modularforcefields.registers.ModularForcefieldsTiles;
 import modularforcefields.registers.ModularForcefieldsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.RegistryObject;
 
 public class TileFortronCapacitor extends TileFortronConnective {
 	public static final HashSet<SubtypeModule> VALIDMODULES = Sets.newHashSet(SubtypeModule.upgradespeed, SubtypeModule.upgradecapacity);
 	public static final int BASEENERGY = 100;
-	public Property<Integer> fortron = property(new Property<>(PropertyType.Integer, "fortron", 0));
-	public Property<Integer> fortronCapacity = property(new Property<>(PropertyType.Integer, "fortronCapacity", 0));
+	public Property<Integer> fortron = property(new Property<>(PropertyTypes.INTEGER, "fortron", 0));
+	public Property<Integer> fortronCapacity = property(new Property<>(PropertyTypes.INTEGER, "fortronCapacity", 0));
 
 	public TileFortronCapacitor(BlockPos pos, BlockState state) {
-		super(ModularForcefieldsBlockTypes.TILE_FORTRONCAPACITOR.get(), pos, state);
+		super(ModularForcefieldsTiles.TILE_FORTRONCAPACITOR.get(), pos, state);
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(4)).valid((index, stack, inv) -> {
-			for (Entry<ISubtype, RegistryObject<Item>> en : ModularForcefieldsItems.SUBTYPEITEMREGISTER_MAPPINGS.entrySet()) {
-				if (VALIDMODULES.contains(en.getKey())) {
-					if (en.getValue().get() == stack.getItem()) {
-						return true;
-					}
-				}
-			}
-			return false;
-
-		}));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(4)).valid((index, stack, inv) -> ModularForcefieldsItems.ITEMS_MODULE.getSpecificValues(SubtypeModule.upgradespeed, SubtypeModule.upgradecapacity).contains(stack.getItem())));
 		addComponent(new ComponentContainerProvider("container.fortroncapacitor", this).createMenu((id, player) -> new ContainerFortronCapacitor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 

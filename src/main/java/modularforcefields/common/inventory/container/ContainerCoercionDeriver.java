@@ -1,6 +1,6 @@
 package modularforcefields.common.inventory.container;
 
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
+import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
 import modularforcefields.common.item.subtype.SubtypeModule;
 import modularforcefields.common.tile.TileCoercionDeriver;
 import modularforcefields.prefab.inventory.container.slot.item.type.SlotModule;
@@ -23,7 +23,7 @@ public class ContainerCoercionDeriver extends GenericContainerBlockEntity<TileCo
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		playerInvOffset = 40;
+		setPlayerInvOffset(40);
 		SubtypeModule[] valid = TileCoercionDeriver.VALIDMODULES.toArray(new SubtypeModule[0]);
 		addSlot(new SlotModule(inv, nextIndex(), 9, 87, valid));
 		addSlot(new SlotModule(inv, nextIndex(), 154, 47, valid));

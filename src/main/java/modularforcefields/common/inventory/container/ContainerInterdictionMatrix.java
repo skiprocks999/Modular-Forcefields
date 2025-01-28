@@ -1,6 +1,6 @@
 package modularforcefields.common.inventory.container;
 
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
+import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
 import modularforcefields.common.item.subtype.SubtypeModule;
 import modularforcefields.common.tile.TileInterdictionMatrix;
 import modularforcefields.prefab.inventory.container.slot.item.type.SlotModule;
@@ -23,7 +23,7 @@ public class ContainerInterdictionMatrix extends GenericContainerBlockEntity<Til
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		playerInvOffset = 51;
+		setPlayerInvOffset(51);
 		SubtypeModule[] valid = TileInterdictionMatrix.VALIDMODULES.toArray(new SubtypeModule[0]);
 		addSlot(new SlotModule(inv, nextIndex(), 152, 100, valid));
 		for (int xSlot = 0; xSlot < 2; xSlot++) {

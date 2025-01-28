@@ -16,20 +16,17 @@ import modularforcefields.registers.ModularForcefieldsFluids;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
-@OnlyIn(Dist.CLIENT)
 public class ScreenFortronFieldProjector extends GenericScreen<ContainerFortronFieldProjector> {
 	public ScreenFortronFieldProjector(ContainerFortronFieldProjector container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
 		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileFortronFieldProjector projector = container.getHostFromIntArray();
+			TileFortronFieldProjector projector = container.getSafeHost();
 			if (projector != null) {
 				FluidTank tank = new FluidTank(projector.fortronCapacity.get().intValue());
-				tank.setFluid(new FluidStack(ModularForcefieldsFluids.fluidFortron, projector.fortron.get().intValue()));
+				tank.setFluid(new FluidStack(ModularForcefieldsFluids.FLUID_FORTRON, projector.fortron.get().intValue()));
 				return tank;
 			}
 			return null;

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:storage_blocks/gold"
+    },
+    "F": {
+      "item": "modularforcefields:focusmatrix"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BFB",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "modularforcefields:moduleupgradeblockalter"
+  }
+}
