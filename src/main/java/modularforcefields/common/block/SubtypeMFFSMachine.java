@@ -1,11 +1,14 @@
 package modularforcefields.common.block;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.multiblock.subnodebased.Subnode;
+import electrodynamics.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
 import electrodynamics.api.tile.IMachine;
 import electrodynamics.api.tile.MachineProperties;
 import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
-import modularforcefields.common.tile.*;
+import modularforcefields.common.tile.TileBiometricIdentifier;
+import modularforcefields.common.tile.TileCoercionDeriver;
+import modularforcefields.common.tile.TileFortronCapacitor;
+import modularforcefields.common.tile.TileInterdictionMatrix;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -73,13 +76,14 @@ public enum SubtypeMFFSMachine implements ISubtype, IMachine {
         return false;
     }
 
+    @Override
     public boolean isPlayerStorable() {
         return false;
     }
 
     @Override
-    public Subnode[] getSubnodes() {
-        return properties.subnodes;
+    public IMultiblockParentBlock.SubnodeWrapper getSubnodes() {
+        return properties.wrapper;
     }
 
     @Override
