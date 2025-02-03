@@ -23,7 +23,7 @@ authors="${mod_authors}" #optional
 
 description='''${mod_description}'''
 
-[[dependencies.nuclearscience]]
+[[dependencies.modularforcefields]]
 modId="electrodynamics"
 mandatory=true
 versionRange="[0.10,)"
