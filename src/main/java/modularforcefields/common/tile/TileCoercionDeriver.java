@@ -35,7 +35,7 @@ public class TileCoercionDeriver extends TileFortronConnective {
     public TileCoercionDeriver(BlockPos pos, BlockState state) {
         super(ModularForcefieldsTiles.TILE_COERCIONDERIVER.get(), pos, state);
         addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentElectrodynamic(this, true, true).voltage(Constants.COERCIONDERIVER_VOLTAGE).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM));
+        addComponent(new ComponentElectrodynamic(this, false, true).voltage(Constants.COERCIONDERIVER_VOLTAGE).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM));
         addComponent(new ComponentInventory(this, InventoryBuilder.newInv().forceSize(4)).valid((index, stack, inv) -> ModularForcefieldsItems.ITEMS_MODULE.getSpecificValues(SubtypeModule.upgradespeed, SubtypeModule.upgradecapacity).contains(stack.getItem())));
         addComponent(new ComponentContainerProvider("container.coercionderiver", this).createMenu((id, player) -> new ContainerCoercionDeriver(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
     }
