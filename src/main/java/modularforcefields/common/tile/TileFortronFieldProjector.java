@@ -9,9 +9,6 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import modularforcefields.common.item.ItemModule;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Sets;
@@ -27,12 +24,13 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.Location;
 import modularforcefields.common.block.FortronFieldColor;
 import modularforcefields.common.inventory.container.ContainerFortronFieldProjector;
+import modularforcefields.common.item.ItemModule;
 import modularforcefields.common.item.subtype.SubtypeModule;
 import modularforcefields.common.tile.projection.ProjectionType;
 import modularforcefields.common.tile.projection.ThreadProjectorCalculationThread;
-import modularforcefields.registers.ModularForcefieldsTiles;
 import modularforcefields.registers.ModularForcefieldsBlocks;
 import modularforcefields.registers.ModularForcefieldsItems;
+import modularforcefields.registers.ModularForcefieldsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -47,6 +45,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class TileFortronFieldProjector extends TileFortronConnective {
 	public static final HashSet<SubtypeModule> VALIDMODULES = Sets.newHashSet(SubtypeModule.values());

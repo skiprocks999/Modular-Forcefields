@@ -1,6 +1,9 @@
 package modularforcefields.registers;
 
+import java.util.UUID;
+
 import com.mojang.serialization.Codec;
+
 import modularforcefields.References;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -8,8 +11,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.UUID;
 
 public class ModularForcefieldsDataComponentTypes {
 

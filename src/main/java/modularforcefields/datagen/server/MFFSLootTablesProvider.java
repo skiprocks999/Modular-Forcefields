@@ -1,5 +1,7 @@
 package modularforcefields.datagen.server;
 
+import java.util.List;
+
 import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import modularforcefields.References;
 import modularforcefields.common.block.SubtypeMFFSMachine;
@@ -7,8 +9,6 @@ import modularforcefields.registers.ModularForcefieldsBlocks;
 import modularforcefields.registers.ModularForcefieldsTiles;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
-
-import java.util.List;
 
 public class MFFSLootTablesProvider extends ElectrodynamicsLootTablesProvider {
 

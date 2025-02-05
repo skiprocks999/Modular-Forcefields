@@ -67,7 +67,13 @@ public class MFFSLangKeyProvider extends ElectrodynamicsLangKeyProvider {
 			addContainer("fortronfieldprojector", "Fortron Field Projector");
 			addContainer("interdictionmatrix", "Interdiction Matrix");
 			addContainer("biometricidentifier", "Biometric Identifier");
-
+			
+			addGuiLabel("fortrondevice.transfer", "Transfer: %s");
+			addGuiLabel("fortrondevice.linked", "Linked Devices: %s");
+			addGuiLabel("fortrondevice.usage", "Usage: %s");
+			addGuiLabel("fortrondevice.frequency", "Frequency: %s");
+			addGuiLabel("fieldprojector.status", "Status: %s");
+			
 			addChatMessage("identificationcard.text", "ID set to: %s");
 			addChatMessage("identificationcard.id", "Name: %s");
 			addChatMessage("frequencycard.text", "Set frequency to: %s");

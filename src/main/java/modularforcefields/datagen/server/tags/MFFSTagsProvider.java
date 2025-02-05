@@ -1,13 +1,13 @@
 package modularforcefields.datagen.server.tags;
 
+import java.util.concurrent.CompletableFuture;
+
 import modularforcefields.datagen.server.tags.types.MFFSBlockTagsProvider;
 import modularforcefields.datagen.server.tags.types.MFFSItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-
-import java.util.concurrent.CompletableFuture;
 
 public class MFFSTagsProvider {
 

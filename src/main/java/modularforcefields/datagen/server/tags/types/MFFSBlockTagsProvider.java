@@ -1,5 +1,7 @@
 package modularforcefields.datagen.server.tags.types;
 
+import java.util.concurrent.CompletableFuture;
+
 import electrodynamics.common.block.BlockMachine;
 import modularforcefields.References;
 import modularforcefields.registers.ModularForcefieldsBlocks;
@@ -8,8 +10,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-
-import java.util.concurrent.CompletableFuture;
 
 public class MFFSBlockTagsProvider extends BlockTagsProvider {
 

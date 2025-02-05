@@ -1,10 +1,10 @@
 package modularforcefields.common.tile;
 
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyTypes;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import modularforcefields.common.block.FortronFieldColor;
 import modularforcefields.registers.ModularForcefieldsTiles;

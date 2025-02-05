@@ -1,5 +1,8 @@
 package modularforcefields.registers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.registration.BulkDeferredHolder;
 import electrodynamics.common.blockitem.types.BlockItemDescriptable;
@@ -19,9 +22,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModularForcefieldsItems {
 

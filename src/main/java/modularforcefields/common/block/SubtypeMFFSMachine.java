@@ -8,6 +8,7 @@ import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import modularforcefields.common.tile.TileBiometricIdentifier;
 import modularforcefields.common.tile.TileCoercionDeriver;
 import modularforcefields.common.tile.TileFortronCapacitor;
+import modularforcefields.common.tile.TileFortronFieldProjector;
 import modularforcefields.common.tile.TileInterdictionMatrix;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,7 +19,7 @@ public enum SubtypeMFFSMachine implements ISubtype, IMachine {
     biometricidentifier(true, TileBiometricIdentifier::new),
     coercionderiver(true, TileCoercionDeriver::new),
     fortroncapacitor(true, TileFortronCapacitor::new),
-    fortronfieldprojector(true, TileFortronCapacitor::new),
+    fortronfieldprojector(true, TileFortronFieldProjector::new),
     interdictionmatrix(true, TileInterdictionMatrix::new),
     ;
 

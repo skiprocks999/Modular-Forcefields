@@ -3,6 +3,7 @@ package modularforcefields.common.block;
 import java.util.List;
 
 import com.mojang.serialization.MapCodec;
+
 import electrodynamics.prefab.block.GenericEntityBlock;
 import modularforcefields.common.item.subtype.SubtypeModule;
 import modularforcefields.common.tile.FortronFieldStatus;
