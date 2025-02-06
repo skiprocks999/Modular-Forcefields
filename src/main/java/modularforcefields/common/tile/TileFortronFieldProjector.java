@@ -94,7 +94,6 @@ public class TileFortronFieldProjector extends TileFortronConnective {
 		calculatedSize = 0;
 		if (calculationThread != null) {
 			calculationThread.interrupt();
-			calculationThread.stop();
 			calculationThread = null;
 		}
 		calculatedFieldPoints.clear();
