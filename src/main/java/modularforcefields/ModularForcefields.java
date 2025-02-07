@@ -7,6 +7,7 @@ import modularforcefields.common.settings.Constants;
 import modularforcefields.common.tags.MFFTags;
 import modularforcefields.registers.ModularForcefieldsBlocks;
 import modularforcefields.registers.UnifiedModularForcefieldsRegister;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -44,5 +45,8 @@ public class ModularForcefields {
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
 
+	}
+	public static final ResourceLocation rl(String path) {
+		return ResourceLocation.fromNamespaceAndPath(References.ID, path);
 	}
 }
