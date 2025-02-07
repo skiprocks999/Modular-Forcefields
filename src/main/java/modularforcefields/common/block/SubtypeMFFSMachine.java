@@ -17,8 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public enum SubtypeMFFSMachine implements ISubtype, IMachine {
 
     biometricidentifier(true, TileBiometricIdentifier::new),
-    coercionderiver(true, TileCoercionDeriver::new),
-    fortroncapacitor(true, TileFortronCapacitor::new),
+    coercionderiver(true, TileCoercionDeriver::new, MachineProperties.builder().setLitBrightness(7)),
+    fortroncapacitor(true, TileFortronCapacitor::new, MachineProperties.builder().setLitBrightness(13)),
     fortronfieldprojector(true, TileFortronFieldProjector::new),
     interdictionmatrix(true, TileInterdictionMatrix::new),
     ;

@@ -24,7 +24,8 @@ public class TileFortronField extends GenericTile {
 	    return;
 	}
 	Scheduler.schedule(1, () -> {
-	    if (level != null) { // This check must be here, since it may be null when calling onPropertyChange the first time.
+	    if (level != null) { // This check must be here, since it may be null when calling onPropertyChange
+				 // the first time.
 		if (level.getBlockEntity(pos) instanceof TileFortronFieldProjector proj) {
 		    if (!level.isClientSide()) {
 			fieldColorOrdinal.set(proj.getFieldColor().ordinal());
@@ -46,6 +47,11 @@ public class TileFortronField extends GenericTile {
 		projectorPos.set(projector.getBlockPos());
 	    }
 	}
+    }
+
+    @Override
+    public int hashCode() {
+	return 10000 - getBlockPos().getY();
     }
 
     public FortronFieldColor getFieldColor() {

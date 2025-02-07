@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.Sets;
 
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyTypes;
 import electrodynamics.prefab.tile.components.IComponentType;
@@ -45,6 +46,11 @@ public class TileCoercionDeriver extends TileFortronConnective {
         super.tickServer(tickable);
         if (tickable.getTicks() % 20 == 0) {
             onInventoryChange(getComponent(IComponentType.Inventory), 0);
+            boolean isLit = getBlockState().getValue(ElectrodynamicsBlockStates.LIT);
+            boolean shouldLit = fortron.get() > 0;
+            if(isLit != shouldLit) {
+        	level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ElectrodynamicsBlockStates.LIT, shouldLit));
+            }
         }
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
         fortron.set((int) (fortron.get() + electro.extractPower(TransferPack.joulesVoltage(Math.min(getTransfer(), fortronCapacity.get() - fortron.get()), electro.getVoltage()), false).getJoules()));
@@ -53,24 +59,24 @@ public class TileCoercionDeriver extends TileFortronConnective {
 
     @Override
     public void onInventoryChange(ComponentInventory inv, int slot) {
-        super.onInventoryChange(inv, slot);
-        int max = getMaxStored();
-        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-        electro.maxJoules(max);
-        fortron.set(Mth.clamp(fortron.get(), 0, max));
-        fortronCapacity.set(max);
+	super.onInventoryChange(inv, slot);
+	int max = getMaxStored();
+	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	electro.maxJoules(max);
+	fortron.set(Mth.clamp(fortron.get(), 0, max));
+	fortronCapacity.set(max);
     }
 
     private int getMaxStored() {
-        return (int) (getTransfer() * 20 + BASEENERGY * countModules(SubtypeModule.upgradecapacity) * 2.0);
+	return (int) (getTransfer() * 20 + BASEENERGY * countModules(SubtypeModule.upgradecapacity) * 2.0);
     }
 
     public int getTransfer() {
-        return BASEENERGY * 30 + BASEENERGY * countModules(SubtypeModule.upgradespeed);
+	return BASEENERGY * 30 + BASEENERGY * countModules(SubtypeModule.upgradespeed);
     }
 
     @Override
     protected Predicate<BlockEntity> getConnectionTest() {
-        return b -> b instanceof TileFortronCapacitor;
+	return b -> b instanceof TileFortronCapacitor;
     }
 }
