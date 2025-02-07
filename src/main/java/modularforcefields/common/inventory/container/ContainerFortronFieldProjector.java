@@ -59,7 +59,7 @@ public class ContainerFortronFieldProjector extends GenericContainerBlockEntity<
 				addSlot(new SlotModule(inv, nextIndex(), 8 + 18 * xSlot, 27 + 18 * ySlot, valid));
 			}
 		}
-		addSlot(new SlotModule(inv, nextIndex(), 133, 120, valid));
+		addSlot(new SlotModule(inv, nextIndex(), 133, 100, valid));
 
 		addSlot(new SlotModule(inv, nextIndex(), 118, 45, valid));
 
