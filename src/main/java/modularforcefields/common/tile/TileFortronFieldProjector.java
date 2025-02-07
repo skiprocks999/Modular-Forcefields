@@ -158,7 +158,7 @@ public class TileFortronFieldProjector extends TileFortronConnective {
 				int count = 0;
 				Iterator<TileFortronField> it = activeFields.iterator();
 				while (it.hasNext()) {
-					if (count++ > 100) {
+					if (count++ > 100 + activeFields.size() / 100) {
 						break;
 					}
 					TileFortronField field = it.next();

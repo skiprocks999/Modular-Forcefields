@@ -32,7 +32,7 @@ public enum ProjectionType {
 					Location loc = new Location(i + 0.5f, j + 0.5f, k + 0.5f);
 					int distance = (int) loc.distance(new Location(shifted));
 					if (proj.isInterior() ? distance <= proj.radius.get() : distance == proj.radius.get()) {
-						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) ((10000 - j) + rand.nextDouble() * 3 + (int)Math.sqrt(new BlockPos(i, j, k).distToCenterSqr(proj.getBlockPos().getX() + 0.5, j+0.5, proj.getBlockPos().getZ()+0.5)))));
+						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) (10000-j + rand.nextDouble() * 3)));
 					}
 				}
 			}
@@ -47,7 +47,7 @@ public enum ProjectionType {
 					Location loc = new Location(i + 0.5f, j + 0.5f, k + 0.5f);
 					int distance = (int) loc.distance(new Location(shifted));
 					if (proj.isInterior() ? distance <= proj.radius.get() : distance == proj.radius.get()) {
-						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) ((10000 - j) + rand.nextDouble() * 3 + (int)Math.sqrt(new BlockPos(i, j, k).distToCenterSqr(proj.getBlockPos().getX() + 0.5, j+0.5, proj.getBlockPos().getZ()+0.5)))));
+						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) (10000-j + rand.nextDouble() * 3)));
 					}
 				}
 			}
@@ -65,7 +65,7 @@ public enum ProjectionType {
 					Location loc = new Location(i + 0.5f, j + 0.5f, k + 0.5f);
 					int distance = (int) loc.distancelinear(new Location(shifted));
 					if (proj.isInterior() ? distance <= proj.radius.get() : distance == proj.radius.get()) {
-						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) ((10000 - j) + rand.nextDouble() * 3 + (int)Math.sqrt(new BlockPos(i, j, k).distToCenterSqr(proj.getBlockPos().getX() + 0.5, j+0.5, proj.getBlockPos().getZ()+0.5)))));
+						proj.calculatedFieldPoints.add(new HashDistanceBlockPos(i, j, k, (int) (10000-j + rand.nextDouble() * 3)));
 					}
 				}
 			}
