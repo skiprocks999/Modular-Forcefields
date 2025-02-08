@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,lit=false": {
       "model": "modularforcefields:block/fortronfieldprojector"
     },
-    "facing=north": {
+    "facing=east,lit=true": {
+      "model": "modularforcefields:block/fortronfieldprojectoron"
+    },
+    "facing=north,lit=false": {
       "model": "modularforcefields:block/fortronfieldprojector",
       "y": 270
     },
-    "facing=south": {
+    "facing=north,lit=true": {
+      "model": "modularforcefields:block/fortronfieldprojectoron",
+      "y": 270
+    },
+    "facing=south,lit=false": {
       "model": "modularforcefields:block/fortronfieldprojector",
       "y": 90
     },
-    "facing=west": {
+    "facing=south,lit=true": {
+      "model": "modularforcefields:block/fortronfieldprojectoron",
+      "y": 90
+    },
+    "facing=west,lit=false": {
       "model": "modularforcefields:block/fortronfieldprojector",
+      "y": 180
+    },
+    "facing=west,lit=true": {
+      "model": "modularforcefields:block/fortronfieldprojectoron",
       "y": 180
     }
   }
